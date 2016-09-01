@@ -85,5 +85,10 @@ policy extract_variables "extract-vars" {
       type  = "boolean"
       xpath = "/apigee:test/apigee:example"
     }
+
+    variable "name2" {
+      type  = "boolean"
+      xpath = "/apigee:test/apigee:example2"
+    }
   }
 }

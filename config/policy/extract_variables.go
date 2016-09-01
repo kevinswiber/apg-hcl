@@ -66,7 +66,7 @@ type evJSONPayload struct {
 
 type evJSONPayloadVariable struct {
 	XMLName  string `xml:"Variable" hcl:"-"`
-	Name     string `xml:"name,attr" hcl:"-"`
+	Name     string `xml:"name,attr" hcl:",key"`
 	Type     string `xml:"type,attr,omitempty" hcl:"type"`
 	JSONPath string `hcl:"json_path"`
 }
@@ -74,17 +74,18 @@ type evJSONPayloadVariable struct {
 type evXMLPayload struct {
 	XMLName               string                  `xml:"XMLPayload" hcl:"-"`
 	StopPayloadProcessing bool                    `xml:"stopPayloadProcessing,attr,omitempty" hcl:"stop_payload_processing"`
+	Namespaces            []*evXMLNamespace       `xml:"Namespaces>Namespace,omitempty" hcl:"namespace"`
 	Variables             []*evXMLPayloadVariable `xml:"Variable" hcl:"variable"`
 }
 
 type evXMLNamespace struct {
-	Prefix string `xml:"prefix,attr,omitempty" hcl:"-"`
+	Prefix string `xml:"prefix,attr,omitempty" hcl:",key"`
 	Value  string `xml:",chardata" hcl:"value"`
 }
 
 type evXMLPayloadVariable struct {
 	XMLName string `xml:"Variable" hcl:"-"`
-	Name    string `xml:"name,attr" hcl:"-"`
+	Name    string `xml:"name,attr" hcl:",key"`
 	Type    string `xml:"type,attr,omitempty" hcl:"type"`
 	XPath   string `hcl:"xpath"`
 }
