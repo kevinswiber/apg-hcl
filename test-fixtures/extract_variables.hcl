@@ -25,17 +25,65 @@ target_endpoint "default" {
 
 policy extract_variables "extract-vars" {
   source {
-    value = "response"
+    clear_payload = true
+    value         = "response"
   }
 
-  json_payload {
-    variable {
-      name      = "method"
-      type      = "string"
-      json_path = "$.method"
+  variable_prefix             = "myprefix"
+  ignore_unresolved_variables = true
+
+  uri_path {
+    pattern {
+      ignore_case = true
+      value       = "/accounts/{id}"
     }
   }
 
-  variable_prefix             = "resinfo"
-  ignore_unresolved_variables = true
+  query_param "code" {
+    pattern {
+      ignore_case = true
+      value       = "DBN{dbncode}"
+    }
+  }
+
+  header "Authorization" {
+    pattern {
+      ignore_case = false
+      value       = "Bearer {oauthtoken}"
+    }
+  }
+
+  form_param "greeting" {
+    pattern {
+      value = "hello {user}"
+    }
+  }
+
+  variable "request.content" {
+    pattern {
+      value = "hello {user}"
+    }
+  }
+
+  json_payload {
+    variable "name" {
+      type      = "string"
+      json_path = "{example}"
+    }
+  }
+
+  xml_payload {
+    namespace "apigee" {
+      value = "http://apigee.com"
+    }
+
+    namespace "gmail" {
+      value = "http://mai.google.com"
+    }
+
+    variable "name" {
+      type  = "boolean"
+      xpath = "/apigee:test/apigee:example"
+    }
+  }
 }
