@@ -1,18 +1,24 @@
-package policies
+package verifyapikey
 
 import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 )
 
 // VerifyAPIKey represents a <VerifyAPIKey/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/verify-api-key-policy
 type VerifyAPIKey struct {
-	XMLName     string `xml:"VerifyAPIKey" hcl:"-"`
-	Policy      `hcl:",squash"`
-	DisplayName string  `xml:",omitempty" hcl:"display_name"`
-	APIKey      *apikey `hcl:"apikey"`
+	XMLName         string `xml:"VerifyAPIKey" hcl:"-"`
+	policies.Policy `hcl:",squash"`
+	DisplayName     string  `xml:",omitempty" hcl:"display_name"`
+	APIKey          *apikey `hcl:"apikey"`
+}
+
+// GetName returns the policy name.
+func (policy VerifyAPIKey) GetName() string {
+	return policy.Name
 }
 
 type apikey struct {
@@ -25,7 +31,7 @@ type apikey struct {
 func NewVerifyAPIKeyFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p VerifyAPIKey
 
-	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
+	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

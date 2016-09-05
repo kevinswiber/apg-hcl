@@ -1,23 +1,29 @@
-package policies
+package xmltojson
 
 import (
 	"fmt"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 )
 
 // XMLToJSON represents an <XMLToJSON/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/xml-json-policy
 type XMLToJSON struct {
-	XMLName        string `xml:"XMLToJSON" hcl:"-"`
-	Policy         `hcl:",squash"`
-	DisplayName    string          `xml:",omitempty" hcl:"display_name"`
-	Source         string          `xml:",omitempty" hcl:"source"`
-	OutputVariable string          `xml:",omitempty" hcl:"output_variable"`
-	Options        *xmlJSONOptions `xml:",omitempty" hcl:"options"`
-	Format         string          `xml:",omitempty" hcl:"format"`
+	XMLName         string `xml:"XMLToJSON" hcl:"-"`
+	policies.Policy `hcl:",squash"`
+	DisplayName     string          `xml:",omitempty" hcl:"display_name"`
+	Source          string          `xml:",omitempty" hcl:"source"`
+	OutputVariable  string          `xml:",omitempty" hcl:"output_variable"`
+	Options         *xmlJSONOptions `xml:",omitempty" hcl:"options"`
+	Format          string          `xml:",omitempty" hcl:"format"`
+}
+
+// GetName returns the policy name.
+func (policy XMLToJSON) GetName() string {
+	return policy.Name
 }
 
 type xmlJSONOptions struct {
@@ -53,7 +59,7 @@ type xmlJSONPath struct {
 func NewXMLToJSONFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p XMLToJSON
 
-	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
+	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

@@ -1,8 +1,9 @@
-package policies
+package responsecache
 
 import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 )
 
 // ResponseCache represents a <ResponseCache/> element.
@@ -10,7 +11,7 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/response-cache-policy
 type ResponseCache struct {
 	XMLName                     string `xml:"ResponseCache" hcl:"-"`
-	Policy                      `hcl:",squash"`
+	policies.Policy             `hcl:",squash"`
 	Type                        string          `xml:"type,attr,omitempty" hcl:"type"`
 	DisplayName                 string          `xml:",omitempty" hcl:"display_name"`
 	CacheKey                    *cacheKey       `xml:"CacheKey" hcl:"cache_key"`
@@ -23,6 +24,11 @@ type ResponseCache struct {
 	SkipCachePopulation         string          `xml:",omitempty" hcl:"skip_cache_population"`
 	UseAcceptHeader             bool            `xml:",omitempty" hcl:"use_accept_header"`
 	UseResponseCacheHeaders     bool            `xml:",omitempty" hcl:"use_response_cache_headers"`
+}
+
+// GetName returns the policy name.
+func (policy ResponseCache) GetName() string {
+	return policy.Name
 }
 
 type cacheKey struct {
@@ -66,7 +72,7 @@ type expiryDate struct {
 func NewResponseCacheFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p ResponseCache
 
-	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
+	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

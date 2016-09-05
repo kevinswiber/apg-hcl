@@ -16,8 +16,19 @@ type Policy struct {
 	Async           bool   `xml:"async,attr,omitempty" hcl:"async"`
 }
 
-// LoadCommonPolicyHCL converts an HCL ast.ObjectItem into a Policy object.
-func LoadCommonPolicyHCL(item *ast.ObjectItem, p *Policy) error {
+// NameGetter is used to retrieve a policy name
+type NameGetter interface {
+	GetName() string
+}
+
+// ResourceGetter is used for policies with resources
+type ResourceGetter interface {
+	GetResourceURL() string
+	GetResourceContent() string
+}
+
+// DecodePolicyHCL converts an HCL ast.ObjectItem into a Policy object.
+func DecodePolicyHCL(item *ast.ObjectItem, p *Policy) error {
 
 	if err := hcl.DecodeObject(p, item.Val.(*ast.ObjectType)); err != nil {
 		return err

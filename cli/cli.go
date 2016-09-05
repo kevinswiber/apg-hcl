@@ -14,7 +14,7 @@ import (
 	"log"
 	"os"
 	"path"
-	"reflect"
+	//"reflect"
 	"strings"
 )
 
@@ -213,8 +213,9 @@ func Start(opts *Options) {
 				l.Fatal(errors)
 			}
 
-			val := reflect.ValueOf(policy)
-			name := val.FieldByName("Name").String()
+			//val := reflect.ValueOf(policy)
+			//name := val.FieldByName("Name").String()
+			name := policy.GetName()
 
 			output = []byte(xml.Header + string(output))
 			ePath := path.Join(policiesPath, name+".xml")

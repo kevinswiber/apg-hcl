@@ -14,8 +14,9 @@ type Config struct {
 	Proxy           *Proxy
 	ProxyEndpoints  []*endpoints.ProxyEndpoint
 	TargetEndpoints []*endpoints.TargetEndpoint
-	Policies        []interface{}
-	Resources       map[string]string
+	//Policies        []interface{}
+	Policies  []policies.NameGetter
+	Resources map[string]string
 }
 
 // NewConfigFromHCL converts an HCL ast.ObjectList into a Config object
@@ -63,7 +64,8 @@ func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 	}
 
 	if policyList := list.Filter("policy"); len(policyList.Items) > 0 {
-		var ps []interface{}
+		//var ps []interface{}
+		var ps []policies.NameGetter
 
 		for _, item := range policyList.Items {
 			if len(item.Keys) < 2 ||
@@ -86,7 +88,7 @@ func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 					errors = multierror.Append(errors, err)
 				}
 
-				switch p.(type) {
+				/*switch p.(type) {
 				case policies.Script:
 					script := p.(policies.Script)
 					if len(script.ResourceURL) > 0 && len(script.Content) > 0 {
@@ -103,8 +105,20 @@ func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 						}
 						c.Resources[script.ResourceURL] = script.Content
 					}
+				}*/
+				switch p.(type) {
+				case policies.ResourceGetter:
+					resourcePolicy := p.(policies.ResourceGetter)
+					resourceURL := resourcePolicy.GetResourceURL()
+					content := resourcePolicy.GetResourceContent()
+					if len(resourceURL) > 0 && len(content) > 0 {
+						if c.Resources == nil {
+							c.Resources = make(map[string]string)
+						}
+						c.Resources[resourceURL] = content
+					}
 				}
-				ps = append(ps, p)
+				ps = append(ps, p.(policies.NameGetter))
 			}
 		}
 

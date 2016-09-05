@@ -1,9 +1,11 @@
-package policies
+package raisefault
 
 import (
 	"fmt"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/assignmessage"
 )
 
 // RaiseFault represents a <RaiseFault/> element.
@@ -11,10 +13,15 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/raise-fault-policy
 type RaiseFault struct {
 	XMLName                   string `xml:"RaiseFault" hcl:"-"`
-	Policy                    `hcl:",squash"`
+	policies.Policy           `hcl:",squash"`
 	DisplayName               string         `xml:",omitempty" hcl:"display_name"`
 	FaultResponse             *faultResponse `xml:"FaultResponse" hcl:"fault_response"`
 	IgnoreUnresolvedVariables bool           `xml:"IgnoreUnresolvedVariables" hcl:"ignore_unresolved_variables"`
+}
+
+// GetName returns the policy name.
+func (policy RaiseFault) GetName() string {
+	return policy.Name
 }
 
 type faultResponse struct {
@@ -24,31 +31,31 @@ type faultResponse struct {
 }
 
 type raiseFaultCopy struct {
-	XMLName      string     `xml:"Copy" hcl:"-"`
-	Source       string     `xml:"source,attr,omitempty" hcl:"-"`
-	Headers      *[]*header `xml:"Headers>Header" hcl:"header"`
-	StatusCode   bool       `xml:",omitempty" hcl:"status_code"`
-	ReasonPhrase bool       `xml:",omitempty" hcl:"reason_phrase"`
+	XMLName      string                   `xml:"Copy" hcl:"-"`
+	Source       string                   `xml:"source,attr,omitempty" hcl:"-"`
+	Headers      *[]*assignmessage.Header `xml:"Headers>Header" hcl:"header"`
+	StatusCode   bool                     `xml:",omitempty" hcl:"status_code"`
+	ReasonPhrase bool                     `xml:",omitempty" hcl:"reason_phrase"`
 }
 
 type raiseFaultRemove struct {
-	XMLName string     `xml:"Remove" hcl:"-"`
-	Headers *[]*header `xml:"Headers>Header" hcl:"header"`
+	XMLName string                   `xml:"Remove" hcl:"-"`
+	Headers *[]*assignmessage.Header `xml:"Headers>Header" hcl:"header"`
 }
 
 type raiseFaultSet struct {
-	XMLName      string     `xml:"Set" hcl:"-"`
-	Headers      *[]*header `xml:"Headers>Header" hcl:"header"`
-	Payload      *payload   `xml:",omitempty" hcl:"payload"`
-	StatusCode   int        `xml:",omitempty" hcl:"status_code"`
-	ReasonPhrase string     `xml:",omitempty" hcl:"reason_phrase"`
+	XMLName      string                   `xml:"Set" hcl:"-"`
+	Headers      *[]*assignmessage.Header `xml:"Headers>Header" hcl:"header"`
+	Payload      *assignmessage.Payload   `xml:",omitempty" hcl:"payload"`
+	StatusCode   int                      `xml:",omitempty" hcl:"status_code"`
+	ReasonPhrase string                   `xml:",omitempty" hcl:"reason_phrase"`
 }
 
 // NewRaiseFaultFromHCL converts an HCL ast.ObjectItem into a RaiseFault.
 func NewRaiseFaultFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p RaiseFault
 
-	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
+	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 
@@ -148,7 +155,7 @@ func loadRaiseFaultCopyHCL(item *ast.ObjectItem) (*raiseFaultCopy, error) {
 		return nil, fmt.Errorf("copy not an object")
 	}
 
-	headers, err := loadHeadersHCL(listVal)
+	headers, err := assignmessage.DecodeHeadersHCL(listVal)
 	if err != nil {
 		return nil, err
 	}
@@ -171,7 +178,7 @@ func loadRaiseFaultRemoveHCL(item *ast.ObjectItem) (*raiseFaultRemove, error) {
 		return nil, fmt.Errorf("remove not an object")
 	}
 
-	headers, err := loadHeadersHCL(listVal)
+	headers, err := assignmessage.DecodeHeadersHCL(listVal)
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +201,7 @@ func loadRaiseFaultSetHCL(item *ast.ObjectItem) (*raiseFaultSet, error) {
 		return nil, fmt.Errorf("set not an object")
 	}
 
-	headers, err := loadHeadersHCL(listVal)
+	headers, err := assignmessage.DecodeHeadersHCL(listVal)
 	if err != nil {
 		return nil, err
 	}

@@ -1,4 +1,4 @@
-package policies
+package statisticscollector
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 	"strings"
 )
 
@@ -13,10 +14,15 @@ import (
 //
 // Documentation: http://docs.apigee.com/api-services/reference/statistics-collector-policy
 type StatisticsCollector struct {
-	XMLName     string `xml:"StatisticsCollector" hcl:"-"`
-	Policy      `hcl:",squash"`
-	DisplayName string         `xml:",omitempty" hcl:"display_name"`
-	Statistics  []*scStatistic `xml:"Statistics>Statistic" hcl:"statistic"`
+	XMLName         string `xml:"StatisticsCollector" hcl:"-"`
+	policies.Policy `hcl:",squash"`
+	DisplayName     string         `xml:",omitempty" hcl:"display_name"`
+	Statistics      []*scStatistic `xml:"Statistics>Statistic" hcl:"statistic"`
+}
+
+// GetName returns the policy name.
+func (policy StatisticsCollector) GetName() string {
+	return policy.Name
 }
 
 type scStatistic struct {
@@ -32,7 +38,7 @@ func NewStatisticsCollectorFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p StatisticsCollector
 
-	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
+	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

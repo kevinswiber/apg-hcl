@@ -1,4 +1,4 @@
-package policies
+package extractvariables
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 )
 
 // ExtractVariables represents an <ExtractVariables/> element.
@@ -13,7 +14,7 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/extract-variables-policy
 type ExtractVariables struct {
 	XMLName                   string `xml:"ExtractVariables" hcl:"-"`
-	Policy                    `hcl:",squash"`
+	policies.Policy           `hcl:",squash"`
 	DisplayName               string          `xml:",omitempty" hcl:"display_name"`
 	Source                    *evSource       `xml:",omitempty" hcl:"source"`
 	VariablePrefix            string          `xml:",omitempty" hcl:"variable_prefix"`
@@ -25,6 +26,11 @@ type ExtractVariables struct {
 	Variables                 []*evVariable   `xml:"Variable,omitempty" hcl:"variable"`
 	JSONPayload               *evJSONPayload  `xml:",omitempty" hcl:"json_payload"`
 	XMLPayload                *evXMLPayload   `xml:",omitempty" hcl:"xml_payload"`
+}
+
+// GetName returns the policy name.
+func (policy ExtractVariables) GetName() string {
+	return policy.Name
 }
 
 type evSource struct {
@@ -104,7 +110,7 @@ func NewExtractVariablesFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p ExtractVariables
 
-	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
+	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 
