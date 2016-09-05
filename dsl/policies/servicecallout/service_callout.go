@@ -40,8 +40,8 @@ type scRequest struct {
 	IgnoreUnresolvedVariables bool                  `xml:",omitempty" hcl:"ignore_unresolved_variables"`
 }
 
-// NewServiceCalloutFromHCL converts an HCL ast.ObjectItem into an ServiceCallout object.
-func NewServiceCalloutFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeServiceCalloutHCL converts an HCL ast.ObjectItem into an ServiceCallout object.
+func DecodeServiceCalloutHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p ServiceCallout
 

@@ -212,8 +212,6 @@ func Start(opts *Options) {
 				l.Fatal(errors)
 			}
 
-			//val := reflect.ValueOf(policy)
-			//name := val.FieldByName("Name").String()
 			name := policy.GetName()
 
 			output = []byte(xml.Header + string(output))
@@ -276,10 +274,8 @@ func attachFilenameToPosErrors(file string, errors *multierror.Error) {
 	for _, e := range errors.Errors {
 		switch e.(type) {
 		case *hclerror.PosError:
-			e2 := e.(*hclerror.PosError)
-			e2.Pos.Filename = file
 		case *hclParser.PosError:
-			e2 := e.(*hclParser.PosError)
+			e2 := e.(*hclerror.PosError)
 			e2.Pos.Filename = file
 		case *multierror.Error:
 			attachFilenameToPosErrors(file, e.(*multierror.Error))

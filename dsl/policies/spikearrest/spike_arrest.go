@@ -39,8 +39,8 @@ type spikeRate struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// NewSpikeArrestFromHCL converts an HCL ast.ObjectItem into a SpikeArrest object.
-func NewSpikeArrestFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeSpikeArrestHCL converts an HCL ast.ObjectItem into a SpikeArrest object.
+func DecodeSpikeArrestHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p SpikeArrest
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

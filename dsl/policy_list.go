@@ -18,16 +18,16 @@ import (
 
 // PolicyList is a map of HCL policy types to policy factory functions.
 var PolicyList = map[string]func(*ast.ObjectItem) (interface{}, error){
-	"assign_message":       assignmessage.NewAssignMessageFromHCL,
-	"extract_variables":    extractvariables.NewExtractVariablesFromHCL,
-	"javascript":           javascript.NewJavaScriptFromHCL,
-	"quota":                quota.NewQuotaFromHCL,
-	"raise_fault":          raisefault.NewRaiseFaultFromHCL,
-	"response_cache":       responsecache.NewResponseCacheFromHCL,
-	"script":               script.NewScriptFromHCL,
-	"service_callout":      servicecallout.NewServiceCalloutFromHCL,
-	"spike_arrest":         spikearrest.NewSpikeArrestFromHCL,
-	"statistics_collector": statisticscollector.NewStatisticsCollectorFromHCL,
-	"verify_api_key":       verifyapikey.NewVerifyAPIKeyFromHCL,
-	"xml_to_json":          xmltojson.NewXMLToJSONFromHCL,
+	"assign_message":       assignmessage.DecodeAssignMessageHCL,
+	"extract_variables":    extractvariables.DecodeExtractVariablesHCL,
+	"javascript":           javascript.DecodeJavaScriptHCL,
+	"quota":                quota.DecodeQuotaHCL,
+	"raise_fault":          raisefault.DecodeRaiseFaultHCL,
+	"response_cache":       responsecache.DecodeResponseCacheHCL,
+	"script":               script.DecodeScriptHCL,
+	"service_callout":      servicecallout.DecodeServiceCalloutHCL,
+	"spike_arrest":         spikearrest.DecodeSpikeArrestHCL,
+	"statistics_collector": statisticscollector.DecodeStatisticsCollectorHCL,
+	"verify_api_key":       verifyapikey.DecodeVerifyAPIKeyHCL,
+	"xml_to_json":          xmltojson.DecodeXMLToJSONHCL,
 }

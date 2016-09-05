@@ -105,8 +105,8 @@ type evPattern struct {
 	Value      string `xml:",chardata" hcl:"value"`
 }
 
-// NewExtractVariablesFromHCL converts an HCL ast.ObjectItem into an ExtractVariables object.
-func NewExtractVariablesFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeExtractVariablesHCL converts an HCL ast.ObjectItem into an ExtractVariables object.
+func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p ExtractVariables
 

@@ -33,8 +33,8 @@ type scStatistic struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// NewStatisticsCollectorFromHCL converts an HCL ast.ObjectItem into an StatisticsCollector object.
-func NewStatisticsCollectorFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeStatisticsCollectorHCL converts an HCL ast.ObjectItem into an StatisticsCollector object.
+func DecodeStatisticsCollectorHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p StatisticsCollector
 

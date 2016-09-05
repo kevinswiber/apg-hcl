@@ -42,8 +42,8 @@ func (policy AssignMessage) GetName() string {
 	return policy.Name
 }
 
-// NewAssignMessageFromHCL converts an HCL ast.ObjectItem into an AssignMessage object.
-func NewAssignMessageFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeAssignMessageHCL converts an HCL ast.ObjectItem into an AssignMessage object.
+func DecodeAssignMessageHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p AssignMessage
 

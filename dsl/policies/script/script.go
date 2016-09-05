@@ -33,8 +33,8 @@ func (policy Script) GetName() string {
 	return policy.Name
 }
 
-// NewScriptFromHCL converts an HCL ast.ObjectItem into a Script object.
-func NewScriptFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeScriptHCL converts an HCL ast.ObjectItem into a Script object.
+func DecodeScriptHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p Script
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

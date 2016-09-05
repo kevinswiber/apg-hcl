@@ -37,8 +37,8 @@ func (policy JavaScript) GetResourceContent() string {
 	return policy.Content
 }
 
-// NewJavaScriptFromHCL converts HCL into an JavaScript object.
-func NewJavaScriptFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeJavaScriptHCL converts HCL into an JavaScript object.
+func DecodeJavaScriptHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p JavaScript
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

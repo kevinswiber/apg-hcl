@@ -27,8 +27,8 @@ type apikey struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// NewVerifyAPIKeyFromHCL converts an HCL ast.ObjectItem into a VerifyAPIKey object.
-func NewVerifyAPIKeyFromHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeVerifyAPIKeyHCL converts an HCL ast.ObjectItem into a VerifyAPIKey object.
+func DecodeVerifyAPIKeyHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p VerifyAPIKey
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
