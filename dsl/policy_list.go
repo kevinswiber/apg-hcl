@@ -1,8 +1,8 @@
-package config
+package dsl
 
 import (
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/config/policy"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 )
 
 // PolicyList is a map of HCL policy types to HCL loader functions.

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/config/common"
+	"github.com/kevinswiber/apigee-hcl/dsl/common"
 )
 
 // JavaScriptPolicy represents a <Javascript/> element.

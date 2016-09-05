@@ -8,8 +8,8 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	hclParser "github.com/hashicorp/hcl/hcl/parser"
-	"github.com/kevinswiber/apigee-hcl/config"
-	"github.com/kevinswiber/apigee-hcl/config/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl"
+	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
 	"io/ioutil"
 	"log"
 	"os"
@@ -56,7 +56,7 @@ func Start(opts *Options) {
 		l.Fatal(errors)
 	}
 
-	var c config.Config
+	var c dsl.Config
 
 	for _, file := range opts.InputHCL {
 		d, err := ioutil.ReadFile(file)
@@ -89,7 +89,7 @@ func Start(opts *Options) {
 			l.Fatal(errors)
 		}
 
-		cfg, err := config.LoadConfigFromHCL(list)
+		cfg, err := dsl.NewConfigFromHCL(list)
 		if err != nil {
 			if merr, ok := err.(*multierror.Error); ok {
 				attachFilenameToPosErrors(file, merr)

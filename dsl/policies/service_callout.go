@@ -5,7 +5,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/config/endpoints"
+	"github.com/kevinswiber/apigee-hcl/dsl/endpoints"
 )
 
 // ServiceCalloutPolicy represents an <ServiceCallout/> element.

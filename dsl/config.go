@@ -1,12 +1,12 @@
-package config
+package dsl
 
 import (
 	"fmt"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/config/endpoints"
-	"github.com/kevinswiber/apigee-hcl/config/hclerror"
-	"github.com/kevinswiber/apigee-hcl/config/policy"
+	"github.com/kevinswiber/apigee-hcl/dsl/endpoints"
+	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 )
 
 // Config is a container for holding the contents of an exported Apigee proxy bundle
@@ -18,8 +18,8 @@ type Config struct {
 	Resources       map[string]string
 }
 
-// LoadConfigFromHCL converts an HCL ast.ObjectList into a Config object
-func LoadConfigFromHCL(list *ast.ObjectList) (*Config, error) {
+// NewConfigFromHCL converts an HCL ast.ObjectList into a Config object
+func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 	var errors *multierror.Error
 
 	var c Config
@@ -35,20 +35,28 @@ func LoadConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 	}
 
 	if proxyEndpoints := list.Filter("proxy_endpoint"); len(proxyEndpoints.Items) > 0 {
-		result, err := endpoints.LoadProxyEndpointsHCL(proxyEndpoints)
-		if err != nil {
-			errors = multierror.Append(errors, err)
-			return nil, errors
+		var result []*endpoints.ProxyEndpoint
+		for _, item := range proxyEndpoints.Items {
+			proxyEndpoint, err := endpoints.NewProxyEndpointFromHCL(item)
+			if err != nil {
+				errors = multierror.Append(errors, err)
+				return nil, errors
+			}
+			result = append(result, proxyEndpoint)
 		}
 
 		c.ProxyEndpoints = result
 	}
 
 	if targetEndpoints := list.Filter("target_endpoint"); len(targetEndpoints.Items) > 0 {
-		result, err := endpoints.LoadTargetEndpointsHCL(targetEndpoints)
-		if err != nil {
-			errors = multierror.Append(errors, err)
-			return nil, errors
+		var result []*endpoints.TargetEndpoint
+		for _, item := range targetEndpoints.Items {
+			targetEndpoint, err := endpoints.NewTargetEndpointFromHCL(item)
+			if err != nil {
+				errors = multierror.Append(errors, err)
+				return nil, errors
+			}
+			result = append(result, targetEndpoint)
 		}
 
 		c.TargetEndpoints = result

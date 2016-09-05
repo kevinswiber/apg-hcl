@@ -1,11 +1,11 @@
-package config
+package dsl
 
 import (
 	"fmt"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/config/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
 )
 
 // Proxy represents an <APIProxy/> element in an Apigee proxy bundle
