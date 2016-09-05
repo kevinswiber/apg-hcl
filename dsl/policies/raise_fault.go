@@ -1,16 +1,15 @@
-package policy
+package policies
 
 import (
 	"fmt"
-
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
-// RaiseFaultPolicy represents a <RaiseFaultPolicy/> element.
+// RaiseFault represents a <RaiseFault/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/raise-fault-policy
-type RaiseFaultPolicy struct {
+type RaiseFault struct {
 	XMLName                   string `xml:"RaiseFault" hcl:"-"`
 	Policy                    `hcl:",squash"`
 	DisplayName               string         `xml:",omitempty" hcl:"display_name"`
@@ -45,9 +44,9 @@ type raiseFaultSet struct {
 	ReasonPhrase string     `xml:",omitempty" hcl:"reason_phrase"`
 }
 
-// LoadRaiseFaultHCL converts an HCL ast.ObjectItem into a RaiseFaultPolicy.
-func LoadRaiseFaultHCL(item *ast.ObjectItem) (interface{}, error) {
-	var p RaiseFaultPolicy
+// NewRaiseFaultFromHCL converts an HCL ast.ObjectItem into a RaiseFault.
+func NewRaiseFaultFromHCL(item *ast.ObjectItem) (interface{}, error) {
+	var p RaiseFault
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		return nil, err

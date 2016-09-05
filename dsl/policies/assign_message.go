@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
-// AssignMessagePolicy represents an <AssignMessage/> element.
+// AssignMessage represents an <AssignMessage/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/assign-message-policy
-type AssignMessagePolicy struct {
+type AssignMessage struct {
 	XMLName                   string `xml:"AssignMessage" hcl:"-"`
 	Policy                    `hcl:",squash"`
 	DisplayName               string          `xml:",omitempty" hcl:"display_name"`
@@ -36,10 +36,10 @@ type assignTo struct {
 	Value     string `xml:",chardata" hcl:"value"`
 }
 
-// LoadAssignMessageHCL converts an HCL ast.ObjectItem into an AssignMessagePolicy object.
-func LoadAssignMessageHCL(item *ast.ObjectItem) (interface{}, error) {
+// NewAssignMessageFromHCL converts an HCL ast.ObjectItem into an AssignMessage object.
+func NewAssignMessageFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
-	var p AssignMessagePolicy
+	var p AssignMessage
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		errors = multierror.Append(errors, err)

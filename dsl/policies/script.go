@@ -1,14 +1,14 @@
-package policy
+package policies
 
 import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
-// ScriptPolicy represents a <Script/> element.
+// Script represents a <Script/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/python-script-policy
-type ScriptPolicy struct {
+type Script struct {
 	XMLName     string `xml:"Script" hcl:"-"`
 	Policy      `hcl:",squash"`
 	DisplayName string   `xml:",omitempty" hcl:"display_name"`
@@ -17,9 +17,9 @@ type ScriptPolicy struct {
 	Content     string   `xml:"-" hcl:"content"`
 }
 
-// LoadScriptHCL converts an HCL ast.ObjectItem into a ScriptPolicy object.
-func LoadScriptHCL(item *ast.ObjectItem) (interface{}, error) {
-	var p ScriptPolicy
+// NewScriptFromHCL converts an HCL ast.ObjectItem into a Script object.
+func NewScriptFromHCL(item *ast.ObjectItem) (interface{}, error) {
+	var p Script
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		return nil, err

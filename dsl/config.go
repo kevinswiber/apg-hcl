@@ -62,10 +62,10 @@ func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 		c.TargetEndpoints = result
 	}
 
-	if policies := list.Filter("policy"); len(policies.Items) > 0 {
+	if policyList := list.Filter("policy"); len(policyList.Items) > 0 {
 		var ps []interface{}
 
-		for _, item := range policies.Items {
+		for _, item := range policyList.Items {
 			if len(item.Keys) < 2 ||
 				item.Keys[0].Token.Value() == "" ||
 				item.Keys[1].Token.Value() == "" {
@@ -87,16 +87,16 @@ func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 				}
 
 				switch p.(type) {
-				case policy.ScriptPolicy:
-					script := p.(policy.ScriptPolicy)
+				case policies.Script:
+					script := p.(policies.Script)
 					if len(script.ResourceURL) > 0 && len(script.Content) > 0 {
 						if c.Resources == nil {
 							c.Resources = make(map[string]string)
 						}
 						c.Resources[script.ResourceURL] = script.Content
 					}
-				case policy.JavaScriptPolicy:
-					script := p.(policy.JavaScriptPolicy)
+				case policies.JavaScript:
+					script := p.(policies.JavaScript)
 					if len(script.ResourceURL) > 0 && len(script.Content) > 0 {
 						if c.Resources == nil {
 							c.Resources = make(map[string]string)

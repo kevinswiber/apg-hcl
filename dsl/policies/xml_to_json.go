@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
 )
 
-// XMLToJSONPolicy represents an <XMLToJSON/> element.
+// XMLToJSON represents an <XMLToJSON/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/xml-json-policy
-type XMLToJSONPolicy struct {
+type XMLToJSON struct {
 	XMLName        string `xml:"XMLToJSON" hcl:"-"`
 	Policy         `hcl:",squash"`
 	DisplayName    string          `xml:",omitempty" hcl:"display_name"`
@@ -49,9 +49,9 @@ type xmlJSONPath struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// LoadXMLToJSONHCL converts an HCL ast.ObjectItem into a XMLToJSONPolicy object.
-func LoadXMLToJSONHCL(item *ast.ObjectItem) (interface{}, error) {
-	var p XMLToJSONPolicy
+// NewXMLToJSONFromHCL converts an HCL ast.ObjectItem into a XMLToJSON object.
+func NewXMLToJSONFromHCL(item *ast.ObjectItem) (interface{}, error) {
+	var p XMLToJSON
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		return nil, err

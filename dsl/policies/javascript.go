@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 	"github.com/kevinswiber/apigee-hcl/dsl/common"
 )
 
-// JavaScriptPolicy represents a <Javascript/> element.
+// JavaScript represents a <Javascript/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/javascript-policy
-type JavaScriptPolicy struct {
+type JavaScript struct {
 	XMLName     string `xml:"Javascript" hcl:"-"`
 	Policy      `hcl:",squash"`
 	TimeLimit   int                `xml:"timeLimit,attr" hcl:"time_limit"`
@@ -21,9 +21,9 @@ type JavaScriptPolicy struct {
 	Content     string             `xml:"-" hcl:"content"`
 }
 
-// LoadJavaScriptHCL converts HCL into an JavaScriptPolicy object.
-func LoadJavaScriptHCL(item *ast.ObjectItem) (interface{}, error) {
-	var p JavaScriptPolicy
+// NewJavaScriptFromHCL converts HCL into an JavaScript object.
+func NewJavaScriptFromHCL(item *ast.ObjectItem) (interface{}, error) {
+	var p JavaScript
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		return nil, err

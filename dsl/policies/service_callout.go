@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -8,10 +8,10 @@ import (
 	"github.com/kevinswiber/apigee-hcl/dsl/endpoints"
 )
 
-// ServiceCalloutPolicy represents an <ServiceCallout/> element.
+// ServiceCallout represents an <ServiceCallout/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/service-callout-policy
-type ServiceCalloutPolicy struct {
+type ServiceCallout struct {
 	XMLName               string `xml:"ServiceCallout" hcl:"-"`
 	Policy                `hcl:",squash"`
 	DisplayName           string                           `xml:",omitempty" hcl:"display_name"`
@@ -33,10 +33,10 @@ type scRequest struct {
 	IgnoreUnresolvedVariables bool    `xml:",omitempty" hcl:"ignore_unresolved_variables"`
 }
 
-// LoadServiceCalloutHCL converts an HCL ast.ObjectItem into an ServiceCalloutPolicy object.
-func LoadServiceCalloutHCL(item *ast.ObjectItem) (interface{}, error) {
+// NewServiceCalloutFromHCL converts an HCL ast.ObjectItem into an ServiceCallout object.
+func NewServiceCalloutFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
-	var p ServiceCalloutPolicy
+	var p ServiceCallout
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		errors = multierror.Append(errors, err)

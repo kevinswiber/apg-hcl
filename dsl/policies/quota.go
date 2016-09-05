@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 	"github.com/hashicorp/hcl/hcl/ast"
 )
 
-// QuotaPolicy represents a <Quota/> element.
+// Quota represents a <Quota/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/quota-policy
-type QuotaPolicy struct {
+type Quota struct {
 	XMLName                   string `xml:"Quota" hcl:"-"`
 	Policy                    `hcl:",squash"`
 	Type                      string         `xml:"type,attr,omitempty" hcl:"type"`
@@ -73,10 +73,10 @@ type messageWeight struct {
 	Ref     string `xml:"ref,attr,omitempty" hcl:"ref"`
 }
 
-// LoadQuotaHCL converts an HCL ast.ObjectItem into a QuotaPolicy object.
-func LoadQuotaHCL(item *ast.ObjectItem) (interface{}, error) {
+// NewQuotaFromHCL converts an HCL ast.ObjectItem into a Quota object.
+func NewQuotaFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
-	var p QuotaPolicy
+	var p Quota
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		errors = multierror.Append(errors, err)

@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -9,10 +9,10 @@ import (
 	"strings"
 )
 
-// StatisticsCollectorPolicy represents an <StatisticsCollector/> element.
+// StatisticsCollector represents an <StatisticsCollector/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/statistics-collector-policy
-type StatisticsCollectorPolicy struct {
+type StatisticsCollector struct {
 	XMLName     string `xml:"StatisticsCollector" hcl:"-"`
 	Policy      `hcl:",squash"`
 	DisplayName string         `xml:",omitempty" hcl:"display_name"`
@@ -27,10 +27,10 @@ type scStatistic struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// LoadStatisticsCollectorHCL converts an HCL ast.ObjectItem into an StatisticsCollectorPolicy object.
-func LoadStatisticsCollectorHCL(item *ast.ObjectItem) (interface{}, error) {
+// NewStatisticsCollectorFromHCL converts an HCL ast.ObjectItem into an StatisticsCollector object.
+func NewStatisticsCollectorFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
-	var p StatisticsCollectorPolicy
+	var p StatisticsCollector
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		return nil, err

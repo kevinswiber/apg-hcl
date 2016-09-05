@@ -1,4 +1,4 @@
-package policy
+package policies
 
 import (
 	"fmt"
@@ -8,10 +8,10 @@ import (
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
 )
 
-// ExtractVariablesPolicy represents an <ExtractVariables/> element.
+// ExtractVariables represents an <ExtractVariables/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/extract-variables-policy
-type ExtractVariablesPolicy struct {
+type ExtractVariables struct {
 	XMLName                   string `xml:"ExtractVariables" hcl:"-"`
 	Policy                    `hcl:",squash"`
 	DisplayName               string          `xml:",omitempty" hcl:"display_name"`
@@ -99,10 +99,10 @@ type evPattern struct {
 	Value      string `xml:",chardata" hcl:"value"`
 }
 
-// LoadExtractVariablesHCL converts an HCL ast.ObjectItem into an ExtractVariablesPolicy object.
-func LoadExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
+// NewExtractVariablesFromHCL converts an HCL ast.ObjectItem into an ExtractVariables object.
+func NewExtractVariablesFromHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
-	var p ExtractVariablesPolicy
+	var p ExtractVariables
 
 	if err := LoadCommonPolicyHCL(item, &p.Policy); err != nil {
 		return nil, err
