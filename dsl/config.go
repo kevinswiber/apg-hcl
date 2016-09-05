@@ -14,13 +14,12 @@ type Config struct {
 	Proxy           *Proxy
 	ProxyEndpoints  []*endpoints.ProxyEndpoint
 	TargetEndpoints []*endpoints.TargetEndpoint
-	//Policies        []interface{}
-	Policies  []policies.NameGetter
-	Resources map[string]string
+	Policies        []policies.NameGetter
+	Resources       map[string]string
 }
 
-// NewConfigFromHCL converts an HCL ast.ObjectList into a Config object
-func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
+// DecodeConfigHCL converts an HCL ast.ObjectList into a Config object
+func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 	var errors *multierror.Error
 
 	var c Config
@@ -88,24 +87,6 @@ func NewConfigFromHCL(list *ast.ObjectList) (*Config, error) {
 					errors = multierror.Append(errors, err)
 				}
 
-				/*switch p.(type) {
-				case policies.Script:
-					script := p.(policies.Script)
-					if len(script.ResourceURL) > 0 && len(script.Content) > 0 {
-						if c.Resources == nil {
-							c.Resources = make(map[string]string)
-						}
-						c.Resources[script.ResourceURL] = script.Content
-					}
-				case policies.JavaScript:
-					script := p.(policies.JavaScript)
-					if len(script.ResourceURL) > 0 && len(script.Content) > 0 {
-						if c.Resources == nil {
-							c.Resources = make(map[string]string)
-						}
-						c.Resources[script.ResourceURL] = script.Content
-					}
-				}*/
 				switch p.(type) {
 				case policies.ResourceGetter:
 					resourcePolicy := p.(policies.ResourceGetter)

@@ -14,7 +14,6 @@ import (
 	"log"
 	"os"
 	"path"
-	//"reflect"
 	"strings"
 )
 
@@ -89,7 +88,7 @@ func Start(opts *Options) {
 			l.Fatal(errors)
 		}
 
-		cfg, err := dsl.NewConfigFromHCL(list)
+		cfg, err := dsl.DecodeConfigHCL(list)
 		if err != nil {
 			if merr, ok := err.(*multierror.Error); ok {
 				attachFilenameToPosErrors(file, merr)
