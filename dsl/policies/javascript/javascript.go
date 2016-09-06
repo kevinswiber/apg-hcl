@@ -19,17 +19,17 @@ type JavaScript struct {
 	ResourceURL     string             `hcl:"resource_url"`
 	IncludeURL      []string           `xml:",omitempty" hcl:"include_url"`
 	Properties      []*common.Property `xml:"Properties>Property" hcl:"properties"`
-	Content         string             `xml:"-" hcl:"content"`
+	InternalContent string             `xml:"-" hcl:"content"`
 }
 
-// GetResourceURL returns the resource URL for the policy
-func (policy *JavaScript) GetResourceURL() string {
+// URL returns the resource URL for the policy
+func (policy *JavaScript) URL() string {
 	return policy.ResourceURL
 }
 
-// GetResourceContent returns the reousrce content
-func (policy *JavaScript) GetResourceContent() string {
-	return policy.Content
+// Content returns the reousrce content
+func (policy *JavaScript) Content() string {
+	return policy.InternalContent
 }
 
 // DecodeJavaScriptHCL converts HCL into an JavaScript object.

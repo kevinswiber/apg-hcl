@@ -32,10 +32,10 @@ func (p *Policy) SetName(name string) {
 	p.InternalName = name
 }
 
-// ResourceGetter is used for policies with resources
-type ResourceGetter interface {
-	GetResourceURL() string
-	GetResourceContent() string
+// Resourcer is used for policies with resources
+type Resourcer interface {
+	URL() string
+	Content() string
 }
 
 // DecodePolicyHCL converts an HCL ast.ObjectItem into a Policy object.

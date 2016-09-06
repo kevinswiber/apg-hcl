@@ -15,17 +15,17 @@ type Script struct {
 	DisplayName     string   `xml:",omitempty" hcl:"display_name"`
 	ResourceURL     string   `hcl:"resource_url"`
 	IncludeURL      []string `xml:",omitempty" hcl:"include_url"`
-	Content         string   `xml:"-" hcl:"content"`
+	InternalContent string   `xml:"-" hcl:"content"`
 }
 
-// GetResourceURL returns the resource URL for the policy
-func (policy Script) GetResourceURL() string {
+// URL returns the resource URL for the policy
+func (policy Script) URL() string {
 	return policy.ResourceURL
 }
 
-// GetResourceContent returns the reousrce content
-func (policy Script) GetResourceContent() string {
-	return policy.Content
+// Content returns the reousrce content
+func (policy Script) Content() string {
+	return policy.InternalContent
 }
 
 // DecodeScriptHCL converts an HCL ast.ObjectItem into a Script object.
