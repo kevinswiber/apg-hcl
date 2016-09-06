@@ -34,8 +34,13 @@ func (p *Policy) SetName(name string) {
 
 // Resourcer is used for policies with resources
 type Resourcer interface {
-	URL() string
-	Content() string
+	Resource() *Resource
+}
+
+// Resource represents an included file in a proxy bundle
+type Resource struct {
+	URL     string
+	Content string
 }
 
 // DecodePolicyHCL converts an HCL ast.ObjectItem into a Policy object.

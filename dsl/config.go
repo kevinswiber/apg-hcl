@@ -89,13 +89,12 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 				switch p.(type) {
 				case policies.Resourcer:
 					resourcePolicy := p.(policies.Resourcer)
-					resourceURL := resourcePolicy.URL()
-					content := resourcePolicy.Content()
-					if len(resourceURL) > 0 && len(content) > 0 {
+					r := resourcePolicy.Resource()
+					if len(r.URL) > 0 && len(r.Content) > 0 {
 						if c.Resources == nil {
 							c.Resources = make(map[string]string)
 						}
-						c.Resources[resourceURL] = content
+						c.Resources[r.URL] = r.Content
 					}
 				}
 				ps = append(ps, p.(policies.Namer))

@@ -19,17 +19,15 @@ type JavaScript struct {
 	ResourceURL     string             `hcl:"resource_url"`
 	IncludeURL      []string           `xml:",omitempty" hcl:"include_url"`
 	Properties      []*common.Property `xml:"Properties>Property" hcl:"properties"`
-	InternalContent string             `xml:"-" hcl:"content"`
+	Content         string             `xml:"-" hcl:"content"`
 }
 
-// URL returns the resource URL for the policy
-func (policy *JavaScript) URL() string {
-	return policy.ResourceURL
-}
-
-// Content returns the reousrce content
-func (policy *JavaScript) Content() string {
-	return policy.InternalContent
+// Resource represents an included file in a proxy bundle
+func (j *JavaScript) Resource() *policies.Resource {
+	return &policies.Resource{
+		URL:     j.ResourceURL,
+		Content: j.Content,
+	}
 }
 
 // DecodeJavaScriptHCL converts HCL into an JavaScript object.
