@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 	"github.com/kevinswiber/apigee-hcl/dsl/policies/assignmessage"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 )
 
 // RaiseFault represents a <RaiseFault/> element.
@@ -13,7 +13,7 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/raise-fault-policy
 type RaiseFault struct {
 	XMLName                   string `xml:"RaiseFault" hcl:"-"`
-	policies.Policy           `hcl:",squash"`
+	policy.Policy             `hcl:",squash"`
 	DisplayName               string         `xml:",omitempty" hcl:"display_name"`
 	FaultResponse             *faultResponse `xml:"FaultResponse" hcl:"fault_response"`
 	IgnoreUnresolvedVariables bool           `xml:"IgnoreUnresolvedVariables" hcl:"ignore_unresolved_variables"`
@@ -50,7 +50,7 @@ type raiseFaultSet struct {
 func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p RaiseFault
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

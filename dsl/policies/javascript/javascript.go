@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 	"github.com/kevinswiber/apigee-hcl/dsl/properties"
 )
 
@@ -12,19 +12,19 @@ import (
 //
 // Documentation: http://docs.apigee.com/api-services/reference/javascript-policy
 type JavaScript struct {
-	XMLName         string `xml:"Javascript" hcl:"-"`
-	policies.Policy `hcl:",squash"`
-	TimeLimit       int                    `xml:"timeLimit,attr" hcl:"time_limit"`
-	DisplayName     string                 `xml:",omitempty" hcl:"display_name"`
-	ResourceURL     string                 `hcl:"resource_url"`
-	IncludeURL      []string               `xml:",omitempty" hcl:"include_url"`
-	Properties      []*properties.Property `xml:"Properties>Property" hcl:"properties"`
-	Content         string                 `xml:"-" hcl:"content"`
+	XMLName       string `xml:"Javascript" hcl:"-"`
+	policy.Policy `hcl:",squash"`
+	TimeLimit     int                    `xml:"timeLimit,attr" hcl:"time_limit"`
+	DisplayName   string                 `xml:",omitempty" hcl:"display_name"`
+	ResourceURL   string                 `hcl:"resource_url"`
+	IncludeURL    []string               `xml:",omitempty" hcl:"include_url"`
+	Properties    []*properties.Property `xml:"Properties>Property" hcl:"properties"`
+	Content       string                 `xml:"-" hcl:"content"`
 }
 
 // Resource represents an included file in a proxy bundle
-func (j *JavaScript) Resource() *policies.Resource {
-	return &policies.Resource{
+func (j *JavaScript) Resource() *policy.Resource {
+	return &policy.Resource{
 		URL:     j.ResourceURL,
 		Content: j.Content,
 	}
@@ -34,7 +34,7 @@ func (j *JavaScript) Resource() *policies.Resource {
 func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p JavaScript
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

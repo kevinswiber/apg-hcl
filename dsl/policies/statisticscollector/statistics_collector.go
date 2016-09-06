@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 	"strings"
 )
 
@@ -14,10 +14,10 @@ import (
 //
 // Documentation: http://docs.apigee.com/api-services/reference/statistics-collector-policy
 type StatisticsCollector struct {
-	XMLName         string `xml:"StatisticsCollector" hcl:"-"`
-	policies.Policy `hcl:",squash"`
-	DisplayName     string         `xml:",omitempty" hcl:"display_name"`
-	Statistics      []*scStatistic `xml:"Statistics>Statistic" hcl:"statistic"`
+	XMLName       string `xml:"StatisticsCollector" hcl:"-"`
+	policy.Policy `hcl:",squash"`
+	DisplayName   string         `xml:",omitempty" hcl:"display_name"`
+	Statistics    []*scStatistic `xml:"Statistics>Statistic" hcl:"statistic"`
 }
 
 type scStatistic struct {
@@ -33,7 +33,7 @@ func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p StatisticsCollector
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

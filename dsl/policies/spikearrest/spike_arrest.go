@@ -3,19 +3,19 @@ package spikearrest
 import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 )
 
 // SpikeArrest represents a <SpikeArrest/> element.
 //
 // Documentation: http://docs.apigee.com/api-services/reference/spike-arrest-policy
 type SpikeArrest struct {
-	XMLName         string `xml:"SpikeArrest" hcl:"-"`
-	policies.Policy `hcl:",squash"`
-	DisplayName     string              `xml:",omitempty" hcl:"display_name"`
-	Identifier      *spikeIdentifier    `hcl:"identifier"`
-	MessageWeight   *spikeMessageWeight `hcl:"message_weight"`
-	Rate            *spikeRate          `hcl:"rate"`
+	XMLName       string `xml:"SpikeArrest" hcl:"-"`
+	policy.Policy `hcl:",squash"`
+	DisplayName   string              `xml:",omitempty" hcl:"display_name"`
+	Identifier    *spikeIdentifier    `hcl:"identifier"`
+	MessageWeight *spikeMessageWeight `hcl:"message_weight"`
+	Rate          *spikeRate          `hcl:"rate"`
 }
 
 type spikeIdentifier struct {
@@ -38,7 +38,7 @@ type spikeRate struct {
 func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p SpikeArrest
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

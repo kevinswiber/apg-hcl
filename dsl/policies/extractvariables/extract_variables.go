@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 )
 
 // ExtractVariables represents an <ExtractVariables/> element.
@@ -14,7 +14,7 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/extract-variables-policy
 type ExtractVariables struct {
 	XMLName                   string `xml:"ExtractVariables" hcl:"-"`
-	policies.Policy           `hcl:",squash"`
+	policy.Policy             `hcl:",squash"`
 	DisplayName               string          `xml:",omitempty" hcl:"display_name"`
 	Source                    *evSource       `xml:",omitempty" hcl:"source"`
 	VariablePrefix            string          `xml:",omitempty" hcl:"variable_prefix"`
@@ -105,7 +105,7 @@ func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p ExtractVariables
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		return nil, err
 	}
 

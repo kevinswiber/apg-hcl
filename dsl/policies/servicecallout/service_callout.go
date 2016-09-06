@@ -6,8 +6,8 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/endpoints"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
 	"github.com/kevinswiber/apigee-hcl/dsl/policies/assignmessage"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 )
 
 // ServiceCallout represents an <ServiceCallout/> element.
@@ -15,7 +15,7 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/service-callout-policy
 type ServiceCallout struct {
 	XMLName               string `xml:"ServiceCallout" hcl:"-"`
-	policies.Policy       `hcl:",squash"`
+	policy.Policy         `hcl:",squash"`
 	DisplayName           string                           `xml:",omitempty" hcl:"display_name"`
 	Request               *scRequest                       `hcl:"request"`
 	HTTPTargetConnection  *endpoints.HTTPTargetConnection  `hcl:"http_target_connection"`
@@ -40,7 +40,7 @@ func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p ServiceCallout
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		errors = multierror.Append(errors, err)
 		return nil, errors
 	}

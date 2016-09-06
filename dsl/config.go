@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/hcl/hcl/ast"
 	"github.com/kevinswiber/apigee-hcl/dsl/endpoints"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 )
 
 // Config is a container for holding the contents of an exported Apigee proxy bundle
@@ -14,7 +14,7 @@ type Config struct {
 	Proxy           *Proxy
 	ProxyEndpoints  []*endpoints.ProxyEndpoint
 	TargetEndpoints []*endpoints.TargetEndpoint
-	Policies        []policies.Namer
+	Policies        []policy.Namer
 	Resources       map[string]string
 }
 
@@ -63,7 +63,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 	}
 
 	if policyList := list.Filter("policy"); len(policyList.Items) > 0 {
-		var ps []policies.Namer
+		var ps []policy.Namer
 
 		for _, item := range policyList.Items {
 			if len(item.Keys) < 2 ||
@@ -87,8 +87,8 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 				}
 
 				switch p.(type) {
-				case policies.Resourcer:
-					resourcePolicy := p.(policies.Resourcer)
+				case policy.Resourcer:
+					resourcePolicy := p.(policy.Resourcer)
 					r := resourcePolicy.Resource()
 					if len(r.URL) > 0 && len(r.Content) > 0 {
 						if c.Resources == nil {
@@ -97,7 +97,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 						c.Resources[r.URL] = r.Content
 					}
 				}
-				ps = append(ps, p.(policies.Namer))
+				ps = append(ps, p.(policy.Namer))
 			}
 		}
 

@@ -1,4 +1,4 @@
-package policies
+package policy
 
 import (
 	"fmt"
@@ -43,8 +43,8 @@ type Resource struct {
 	Content string
 }
 
-// DecodePolicyHCL converts an HCL ast.ObjectItem into a Policy object.
-func DecodePolicyHCL(item *ast.ObjectItem, p *Policy) error {
+// DecodeHCL converts an HCL ast.ObjectItem into a Policy object.
+func DecodeHCL(item *ast.ObjectItem, p *Policy) error {
 	if err := hcl.DecodeObject(p, item.Val.(*ast.ObjectType)); err != nil {
 		return err
 	}

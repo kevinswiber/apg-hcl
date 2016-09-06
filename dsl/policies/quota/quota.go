@@ -5,7 +5,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/dsl/policies"
+	"github.com/kevinswiber/apigee-hcl/dsl/policies/policy"
 )
 
 // Quota represents a <Quota/> element.
@@ -13,7 +13,7 @@ import (
 // Documentation: http://docs.apigee.com/api-services/reference/quota-policy
 type Quota struct {
 	XMLName                   string `xml:"Quota" hcl:"-"`
-	policies.Policy           `hcl:",squash"`
+	policy.Policy             `hcl:",squash"`
 	Type                      string         `xml:"type,attr,omitempty" hcl:"type"`
 	DisplayName               string         `xml:",omitempty" hcl:"display_name"`
 	Allows                    []*allow       `xml:"Allow" hcl:"allow"`
@@ -79,7 +79,7 @@ func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p Quota
 
-	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {
+	if err := policy.DecodeHCL(item, &p.Policy); err != nil {
 		errors = multierror.Append(errors, err)
 		return nil, errors
 	}
