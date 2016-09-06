@@ -16,11 +16,6 @@ type VerifyAPIKey struct {
 	APIKey          *apikey `hcl:"apikey"`
 }
 
-// GetName returns the policy name.
-func (policy VerifyAPIKey) GetName() string {
-	return policy.Name
-}
-
 type apikey struct {
 	XMLName string `xml:"APIKey" hcl:"-"`
 	Ref     string `xml:"ref,attr" hcl:"ref"`

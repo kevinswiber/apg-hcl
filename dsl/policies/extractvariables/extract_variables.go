@@ -28,11 +28,6 @@ type ExtractVariables struct {
 	XMLPayload                *evXMLPayload   `xml:",omitempty" hcl:"xml_payload"`
 }
 
-// GetName returns the policy name.
-func (policy ExtractVariables) GetName() string {
-	return policy.Name
-}
-
 type evSource struct {
 	XMLName      string `xml:"Source" hcl:"-"`
 	ClearPayload bool   `xml:"clearPayload,attr,omitempty" hcl:"clear_payload"`

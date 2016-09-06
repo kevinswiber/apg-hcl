@@ -10,15 +10,26 @@ import (
 //
 // Documentation: http://docs.apigee.com/api-services/reference/api-proxy-configuration-reference#policies
 type Policy struct {
-	Name            string `xml:"name,attr,omitempty" hcl:"-"`
+	InternalName    string `xml:"name,attr,omitempty" hcl:"-"`
 	Enabled         bool   `xml:"enabled,attr" hcl:"enabled"`
 	ContinueOnError bool   `xml:"continueOnError,attr,omitempty" hcl:"continue_on_error"`
 	Async           bool   `xml:"async,attr,omitempty" hcl:"async"`
 }
 
-// NameGetter is used to retrieve a policy name
-type NameGetter interface {
-	GetName() string
+// Namer is used to set and retrieve a policy name
+type Namer interface {
+	Name() string
+	SetName(string)
+}
+
+// Name returns the name of the policy.
+func (p *Policy) Name() string {
+	return p.InternalName
+}
+
+// SetName sets the name of the policy.
+func (p *Policy) SetName(name string) {
+	p.InternalName = name
 }
 
 // ResourceGetter is used for policies with resources
@@ -45,7 +56,7 @@ func DecodePolicyHCL(item *ast.ObjectItem, p *Policy) error {
 		p.Enabled = true
 	}
 
-	p.Name = item.Keys[1].Token.Value().(string)
+	p.SetName(item.Keys[1].Token.Value().(string))
 
 	return nil
 }

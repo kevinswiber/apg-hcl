@@ -26,11 +26,6 @@ type ResponseCache struct {
 	UseResponseCacheHeaders     bool            `xml:",omitempty" hcl:"use_response_cache_headers"`
 }
 
-// GetName returns the policy name.
-func (policy ResponseCache) GetName() string {
-	return policy.Name
-}
-
 type cacheKey struct {
 	XMLName     string              `xml:"CacheKey" hcl:"-"`
 	Prefix      string              `xml:",omitempty" hcl:"prefix"`

@@ -20,11 +20,6 @@ type StatisticsCollector struct {
 	Statistics      []*scStatistic `xml:"Statistics>Statistic" hcl:"statistic"`
 }
 
-// GetName returns the policy name.
-func (policy StatisticsCollector) GetName() string {
-	return policy.Name
-}
-
 type scStatistic struct {
 	XMLName string `xml:"Statistic" hcl:"-"`
 	Name    string `xml:"name,attr" hcl:"-"`

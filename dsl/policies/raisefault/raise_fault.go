@@ -19,11 +19,6 @@ type RaiseFault struct {
 	IgnoreUnresolvedVariables bool           `xml:"IgnoreUnresolvedVariables" hcl:"ignore_unresolved_variables"`
 }
 
-// GetName returns the policy name.
-func (policy RaiseFault) GetName() string {
-	return policy.Name
-}
-
 type faultResponse struct {
 	Copy   *raiseFaultCopy   `xml:",omitempty" hcl:"copy"`
 	Remove *raiseFaultRemove `xml:",omitempty" hcl:"remove"`

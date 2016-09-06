@@ -212,7 +212,7 @@ func Start(opts *Options) {
 				l.Fatal(errors)
 			}
 
-			name := policy.GetName()
+			name := policy.Name()
 
 			output = []byte(xml.Header + string(output))
 			ePath := path.Join(policiesPath, name+".xml")

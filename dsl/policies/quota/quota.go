@@ -27,11 +27,6 @@ type Quota struct {
 	MessageWeight             *messageWeight `xml:",omitempty" hcl:"message_weight"`
 }
 
-// GetName returns the policy name.
-func (policy Quota) GetName() string {
-	return policy.Name
-}
-
 type allow struct {
 	XMLName  string   `xml:"Allow" hcl:"-"`
 	Count    int      `xml:"count,attr,omitempty" hcl:"count"`
@@ -115,7 +110,7 @@ func DecodeQuotaHCL(item *ast.ObjectItem) (interface{}, error) {
 		return nil, errors
 	}
 
-	return p, nil
+	return &p, nil
 }
 
 func decodeQuotaAllowsHCL(items []*ast.ObjectItem) ([]*allow, error) {

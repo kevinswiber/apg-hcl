@@ -21,11 +21,6 @@ type XMLToJSON struct {
 	Format          string          `xml:",omitempty" hcl:"format"`
 }
 
-// GetName returns the policy name.
-func (policy XMLToJSON) GetName() string {
-	return policy.Name
-}
-
 type xmlJSONOptions struct {
 	XMLName                  string               `xml:"Options" hcl:"-"`
 	RecognizeNumber          bool                 `xml:",omitempty" hcl:"recognize_number"`

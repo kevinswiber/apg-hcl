@@ -28,11 +28,6 @@ func (policy Script) GetResourceContent() string {
 	return policy.Content
 }
 
-// GetName returns the policy name.
-func (policy Script) GetName() string {
-	return policy.Name
-}
-
 // DecodeScriptHCL converts an HCL ast.ObjectItem into a Script object.
 func DecodeScriptHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p Script

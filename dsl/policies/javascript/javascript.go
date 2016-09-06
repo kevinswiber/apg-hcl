@@ -22,18 +22,13 @@ type JavaScript struct {
 	Content         string             `xml:"-" hcl:"content"`
 }
 
-// GetName returns the policy name.
-func (policy JavaScript) GetName() string {
-	return policy.Name
-}
-
 // GetResourceURL returns the resource URL for the policy
-func (policy JavaScript) GetResourceURL() string {
+func (policy *JavaScript) GetResourceURL() string {
 	return policy.ResourceURL
 }
 
 // GetResourceContent returns the reousrce content
-func (policy JavaScript) GetResourceContent() string {
+func (policy *JavaScript) GetResourceContent() string {
 	return policy.Content
 }
 
@@ -65,5 +60,5 @@ func DecodeJavaScriptHCL(item *ast.ObjectItem) (interface{}, error) {
 		p.Properties = props
 	}
 
-	return p, nil
+	return &p, nil
 }

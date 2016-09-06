@@ -18,11 +18,6 @@ type SpikeArrest struct {
 	Rate            *spikeRate          `hcl:"rate"`
 }
 
-// GetName returns the policy name.
-func (policy SpikeArrest) GetName() string {
-	return policy.Name
-}
-
 type spikeIdentifier struct {
 	XMLName string `xml:"Identifier" hcl:"-"`
 	Ref     string `xml:"ref,attr,omitempty" hcl:"ref"`

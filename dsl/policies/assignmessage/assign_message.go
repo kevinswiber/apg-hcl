@@ -37,11 +37,6 @@ type assignTo struct {
 	Value     string `xml:",chardata" hcl:"value"`
 }
 
-// GetName returns the policy name.
-func (policy AssignMessage) GetName() string {
-	return policy.Name
-}
-
 // DecodeAssignMessageHCL converts an HCL ast.ObjectItem into an AssignMessage object.
 func DecodeAssignMessageHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
@@ -117,5 +112,5 @@ func DecodeAssignMessageHCL(item *ast.ObjectItem) (interface{}, error) {
 		return nil, errors
 	}
 
-	return p, nil
+	return &p, nil
 }

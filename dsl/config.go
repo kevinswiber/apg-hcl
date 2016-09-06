@@ -14,7 +14,7 @@ type Config struct {
 	Proxy           *Proxy
 	ProxyEndpoints  []*endpoints.ProxyEndpoint
 	TargetEndpoints []*endpoints.TargetEndpoint
-	Policies        []policies.NameGetter
+	Policies        []policies.Namer
 	Resources       map[string]string
 }
 
@@ -63,8 +63,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 	}
 
 	if policyList := list.Filter("policy"); len(policyList.Items) > 0 {
-		//var ps []interface{}
-		var ps []policies.NameGetter
+		var ps []policies.Namer
 
 		for _, item := range policyList.Items {
 			if len(item.Keys) < 2 ||
@@ -99,7 +98,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 						c.Resources[resourceURL] = content
 					}
 				}
-				ps = append(ps, p.(policies.NameGetter))
+				ps = append(ps, p.(policies.Namer))
 			}
 		}
 

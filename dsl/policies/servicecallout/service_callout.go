@@ -24,11 +24,6 @@ type ServiceCallout struct {
 	Timeout               int                              `xml:",omitempty" hcl:"timeout"`
 }
 
-// GetName returns the policy name.
-func (policy ServiceCallout) GetName() string {
-	return policy.Name
-}
-
 type scRequest struct {
 	XMLName                   string                `xml:"Request" hcl:"-"`
 	ClearPayload              bool                  `xml:"clearPayload,attr,omitempty" hcl:"clear_payload"`
