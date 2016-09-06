@@ -50,8 +50,8 @@ type xmlJSONPath struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// DecodeXMLToJSONHCL converts an HCL ast.ObjectItem into a XMLToJSON object.
-func DecodeXMLToJSONHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeHCL converts an HCL ast.ObjectItem into a XMLToJSON object.
+func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p XMLToJSON
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

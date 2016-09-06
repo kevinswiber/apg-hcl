@@ -46,8 +46,8 @@ type raiseFaultSet struct {
 	ReasonPhrase string                   `xml:",omitempty" hcl:"reason_phrase"`
 }
 
-// DecodeRaiseFaultHCL converts an HCL ast.ObjectItem into a RaiseFault.
-func DecodeRaiseFaultHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeHCL converts an HCL ast.ObjectItem into a RaiseFault.
+func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p RaiseFault
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

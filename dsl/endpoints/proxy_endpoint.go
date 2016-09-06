@@ -5,8 +5,8 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/dsl/common"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/properties"
 )
 
 // ProxyEndpoint represents a <ProxyEndpoint/> element.
@@ -30,10 +30,10 @@ type ProxyEndpoint struct {
 //
 // Documentation: http://docs.apigee.com/api-services/reference/api-proxy-configuration-reference#proxyendpoint-proxyendpointconfigurationelements
 type HTTPProxyConnection struct {
-	XMLName      string             `xml:"HTTPProxyConnection" hcl:"-"`
-	BasePath     string             `hcl:"base_path"`
-	VirtualHosts []string           `xml:"VirtualHost" hcl:"virtual_host"`
-	Properties   []*common.Property `xml:"Properties>Property" hcl:"properties"`
+	XMLName      string                 `xml:"HTTPProxyConnection" hcl:"-"`
+	BasePath     string                 `hcl:"base_path"`
+	VirtualHosts []string               `xml:"VirtualHost" hcl:"virtual_host"`
+	Properties   []*properties.Property `xml:"Properties>Property" hcl:"properties"`
 }
 
 // RouteRule represents a <RouteRule/> element in an HTTPProxyConnection
@@ -47,8 +47,8 @@ type RouteRule struct {
 	URL            string `xml:",omitempty" hcl:"url"`
 }
 
-// NewProxyEndpointFromHCL converts an HCL ast.ObjectItem into a ProxyEndpoint.
-func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
+// DecodeProxyEndpointHCL converts an HCL ast.ObjectItem into a ProxyEndpoint.
+func DecodeProxyEndpointHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	var errors *multierror.Error
 	if len(item.Keys) == 0 || item.Keys[0].Token.Value() == "" {
 		pos := item.Val.Pos()
@@ -181,7 +181,7 @@ func decodeHTTPProxyConnectionHCL(item *ast.ObjectItem) (*HTTPProxyConnection, e
 
 	if propsList := listVal.Filter("properties"); len(propsList.Items) > 0 {
 
-		props, err := common.DecodePropertiesHCL(propsList.Items[0])
+		props, err := properties.DecodeHCL(propsList.Items[0])
 		if err != nil {
 			return nil, err
 		}

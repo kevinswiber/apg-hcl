@@ -5,8 +5,8 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl"
 	"github.com/hashicorp/hcl/hcl/ast"
-	"github.com/kevinswiber/apigee-hcl/dsl/common"
 	"github.com/kevinswiber/apigee-hcl/dsl/hclerror"
+	"github.com/kevinswiber/apigee-hcl/dsl/properties"
 )
 
 // TargetEndpoint represents a <TargetEndpoint/> element.
@@ -31,10 +31,10 @@ type TargetEndpoint struct {
 //
 // Documentation: http://docs.apigee.com/api-services/reference/api-proxy-configuration-reference#targetendpoint-targetendpointconfigurationelements
 type HTTPTargetConnection struct {
-	XMLName      string             `xml:"HTTPTargetConnection" hcl:"-"`
-	URL          string             `hcl:"url"`
-	LoadBalancer *LoadBalancer      `hcl:"load_balancer"`
-	Properties   []*common.Property `xml:"Properties>Property" hcl:"properties"`
+	XMLName      string                 `xml:"HTTPTargetConnection" hcl:"-"`
+	URL          string                 `hcl:"url"`
+	LoadBalancer *LoadBalancer          `hcl:"load_balancer"`
+	Properties   []*properties.Property `xml:"Properties>Property" hcl:"properties"`
 }
 
 // LoadBalancer represents a <LoadBalancer/> element in an
@@ -105,8 +105,8 @@ type LoadBalancerServer struct {
 	IsFallback bool   `xml:",omitempty" hcl:"is_fallback"`
 }
 
-// NewTargetEndpointFromHCL converts an HCL ast.ObjectItem into a TargetEndpoint object.
-func NewTargetEndpointFromHCL(item *ast.ObjectItem) (*TargetEndpoint, error) {
+// DecodeTargetEndpointHCL converts an HCL ast.ObjectItem into a TargetEndpoint object.
+func DecodeTargetEndpointHCL(item *ast.ObjectItem) (*TargetEndpoint, error) {
 	var errors *multierror.Error
 	if len(item.Keys) == 0 || item.Keys[0].Token.Value() == "" {
 		pos := item.Val.Pos()
@@ -271,7 +271,7 @@ func DecodeHTTPTargetConnectionHCL(item *ast.ObjectItem) (*HTTPTargetConnection,
 	}
 
 	if propsList := listVal.Filter("properties"); len(propsList.Items) > 0 {
-		props, err := common.DecodePropertiesHCL(propsList.Items[0])
+		props, err := properties.DecodeHCL(propsList.Items[0])
 		if err != nil {
 			return nil, err
 		}

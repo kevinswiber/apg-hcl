@@ -74,8 +74,8 @@ type messageWeight struct {
 	Ref     string `xml:"ref,attr,omitempty" hcl:"ref"`
 }
 
-// DecodeQuotaHCL converts an HCL ast.ObjectItem into a Quota object.
-func DecodeQuotaHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeHCL converts an HCL ast.ObjectItem into a Quota object.
+func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var errors *multierror.Error
 	var p Quota
 

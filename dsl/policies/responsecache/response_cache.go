@@ -63,8 +63,8 @@ type expiryDate struct {
 	Value   string `xml:",chardata" hcl:"value"`
 }
 
-// DecodeResponseCacheHCL converts an HCL ast.ObjectItem into a ResponseCache
-func DecodeResponseCacheHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeHCL converts an HCL ast.ObjectItem into a ResponseCache
+func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p ResponseCache
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

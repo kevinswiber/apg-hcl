@@ -26,8 +26,8 @@ func (s *Script) Resource() *policies.Resource {
 	}
 }
 
-// DecodeScriptHCL converts an HCL ast.ObjectItem into a Script object.
-func DecodeScriptHCL(item *ast.ObjectItem) (interface{}, error) {
+// DecodeHCL converts an HCL ast.ObjectItem into a Script object.
+func DecodeHCL(item *ast.ObjectItem) (interface{}, error) {
 	var p Script
 
 	if err := policies.DecodePolicyHCL(item, &p.Policy); err != nil {

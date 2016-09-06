@@ -37,7 +37,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 	if proxyEndpoints := list.Filter("proxy_endpoint"); len(proxyEndpoints.Items) > 0 {
 		var result []*endpoints.ProxyEndpoint
 		for _, item := range proxyEndpoints.Items {
-			proxyEndpoint, err := endpoints.NewProxyEndpointFromHCL(item)
+			proxyEndpoint, err := endpoints.DecodeProxyEndpointHCL(item)
 			if err != nil {
 				errors = multierror.Append(errors, err)
 				return nil, errors
@@ -51,7 +51,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 	if targetEndpoints := list.Filter("target_endpoint"); len(targetEndpoints.Items) > 0 {
 		var result []*endpoints.TargetEndpoint
 		for _, item := range targetEndpoints.Items {
-			targetEndpoint, err := endpoints.NewTargetEndpointFromHCL(item)
+			targetEndpoint, err := endpoints.DecodeTargetEndpointHCL(item)
 			if err != nil {
 				errors = multierror.Append(errors, err)
 				return nil, errors

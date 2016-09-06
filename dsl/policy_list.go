@@ -18,16 +18,16 @@ import (
 
 // PolicyList is a map of HCL policy types to policy factory functions.
 var PolicyList = map[string]func(*ast.ObjectItem) (interface{}, error){
-	"assign_message":       assignmessage.DecodeAssignMessageHCL,
-	"extract_variables":    extractvariables.DecodeExtractVariablesHCL,
-	"javascript":           javascript.DecodeJavaScriptHCL,
-	"quota":                quota.DecodeQuotaHCL,
-	"raise_fault":          raisefault.DecodeRaiseFaultHCL,
-	"response_cache":       responsecache.DecodeResponseCacheHCL,
-	"script":               script.DecodeScriptHCL,
-	"service_callout":      servicecallout.DecodeServiceCalloutHCL,
-	"spike_arrest":         spikearrest.DecodeSpikeArrestHCL,
-	"statistics_collector": statisticscollector.DecodeStatisticsCollectorHCL,
-	"verify_api_key":       verifyapikey.DecodeVerifyAPIKeyHCL,
-	"xml_to_json":          xmltojson.DecodeXMLToJSONHCL,
+	"assign_message":       assignmessage.DecodeHCL,
+	"extract_variables":    extractvariables.DecodeHCL,
+	"javascript":           javascript.DecodeHCL,
+	"quota":                quota.DecodeHCL,
+	"raise_fault":          raisefault.DecodeHCL,
+	"response_cache":       responsecache.DecodeHCL,
+	"script":               script.DecodeHCL,
+	"service_callout":      servicecallout.DecodeHCL,
+	"spike_arrest":         spikearrest.DecodeHCL,
+	"statistics_collector": statisticscollector.DecodeHCL,
+	"verify_api_key":       verifyapikey.DecodeHCL,
+	"xml_to_json":          xmltojson.DecodeHCL,
 }
