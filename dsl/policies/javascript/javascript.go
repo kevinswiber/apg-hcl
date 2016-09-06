@@ -57,7 +57,7 @@ func DecodeJavaScriptHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if propsList := listVal.Filter("properties"); len(propsList.Items) > 0 {
-		props, err := common.LoadPropertiesHCL(propsList.Items[0])
+		props, err := common.DecodePropertiesHCL(propsList.Items[0])
 		if err != nil {
 			return nil, err
 		}

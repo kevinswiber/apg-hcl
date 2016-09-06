@@ -131,7 +131,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if uriPathList := listVal.Filter("uri_path"); len(uriPathList.Items) > 0 {
-		uriPaths, err := loadExtractVariablesURIPathsHCL(uriPathList.Items)
+		uriPaths, err := decodeURIPathsHCL(uriPathList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -140,7 +140,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if queryParamList := listVal.Filter("query_param"); len(queryParamList.Items) > 0 {
-		queryParams, err := loadExtractVariablesQueryParamsHCL(queryParamList.Items)
+		queryParams, err := decodeQueryParamsHCL(queryParamList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -149,7 +149,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if headerList := listVal.Filter("header"); len(headerList.Items) > 0 {
-		headers, err := loadExtractVariablesHeadersHCL(headerList.Items)
+		headers, err := decodeHeadersHCL(headerList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -158,7 +158,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if formParamList := listVal.Filter("form_param"); len(formParamList.Items) > 0 {
-		formParams, err := loadExtractVariablesFormParamsHCL(formParamList.Items)
+		formParams, err := decodeFormParamsHCL(formParamList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -167,7 +167,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if variableList := listVal.Filter("variable"); len(variableList.Items) > 0 {
-		variables, err := loadExtractVariablesVariablesHCL(variableList.Items)
+		variables, err := decodeVariablesHCL(variableList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -176,7 +176,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if jsonPayloadList := listVal.Filter("json_payload"); len(jsonPayloadList.Items) > 0 {
-		jsonPayload, err := loadExtractVariablesJSONPayloadHCL(jsonPayloadList.Items[0])
+		jsonPayload, err := decodeJSONPayloadHCL(jsonPayloadList.Items[0])
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -185,7 +185,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if xmlPayloadList := listVal.Filter("xml_payload"); len(xmlPayloadList.Items) > 0 {
-		xmlPayload, err := loadExtractVariablesXMLPayloadHCL(xmlPayloadList.Items[0])
+		xmlPayload, err := decodeXMLPayloadHCL(xmlPayloadList.Items[0])
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -213,7 +213,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 	return p, nil
 }
 
-func loadExtractVariablesURIPathsHCL(items []*ast.ObjectItem) ([]*evURIPath, error) {
+func decodeURIPathsHCL(items []*ast.ObjectItem) ([]*evURIPath, error) {
 	var uriPaths []*evURIPath
 	for _, item := range items {
 		var up evURIPath
@@ -235,7 +235,7 @@ func loadExtractVariablesURIPathsHCL(items []*ast.ObjectItem) ([]*evURIPath, err
 		}
 
 		if patternList := listVal.Filter("pattern"); len(patternList.Items) > 0 {
-			patterns, err := loadExtractVariablesPatternsHCL(patternList.Items)
+			patterns, err := decodePatternsHCL(patternList.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -248,7 +248,7 @@ func loadExtractVariablesURIPathsHCL(items []*ast.ObjectItem) ([]*evURIPath, err
 	return uriPaths, nil
 }
 
-func loadExtractVariablesQueryParamsHCL(items []*ast.ObjectItem) ([]*evQueryParam, error) {
+func decodeQueryParamsHCL(items []*ast.ObjectItem) ([]*evQueryParam, error) {
 	var queryParams []*evQueryParam
 	for _, item := range items {
 		var qp evQueryParam
@@ -281,7 +281,7 @@ func loadExtractVariablesQueryParamsHCL(items []*ast.ObjectItem) ([]*evQueryPara
 		qp.Name = item.Keys[0].Token.Value().(string)
 
 		if patternList := listVal.Filter("pattern"); len(patternList.Items) > 0 {
-			patterns, err := loadExtractVariablesPatternsHCL(patternList.Items)
+			patterns, err := decodePatternsHCL(patternList.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -294,7 +294,7 @@ func loadExtractVariablesQueryParamsHCL(items []*ast.ObjectItem) ([]*evQueryPara
 	return queryParams, nil
 }
 
-func loadExtractVariablesHeadersHCL(items []*ast.ObjectItem) ([]*evHeader, error) {
+func decodeHeadersHCL(items []*ast.ObjectItem) ([]*evHeader, error) {
 	var headers []*evHeader
 	for _, item := range items {
 		var hdr evHeader
@@ -327,7 +327,7 @@ func loadExtractVariablesHeadersHCL(items []*ast.ObjectItem) ([]*evHeader, error
 		hdr.Name = item.Keys[0].Token.Value().(string)
 
 		if patternList := listVal.Filter("pattern"); len(patternList.Items) > 0 {
-			patterns, err := loadExtractVariablesPatternsHCL(patternList.Items)
+			patterns, err := decodePatternsHCL(patternList.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -340,7 +340,7 @@ func loadExtractVariablesHeadersHCL(items []*ast.ObjectItem) ([]*evHeader, error
 	return headers, nil
 }
 
-func loadExtractVariablesFormParamsHCL(items []*ast.ObjectItem) ([]*evFormParam, error) {
+func decodeFormParamsHCL(items []*ast.ObjectItem) ([]*evFormParam, error) {
 	var formParams []*evFormParam
 	for _, item := range items {
 		var fp evFormParam
@@ -373,7 +373,7 @@ func loadExtractVariablesFormParamsHCL(items []*ast.ObjectItem) ([]*evFormParam,
 		fp.Name = item.Keys[0].Token.Value().(string)
 
 		if patternList := listVal.Filter("pattern"); len(patternList.Items) > 0 {
-			patterns, err := loadExtractVariablesPatternsHCL(patternList.Items)
+			patterns, err := decodePatternsHCL(patternList.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -386,7 +386,7 @@ func loadExtractVariablesFormParamsHCL(items []*ast.ObjectItem) ([]*evFormParam,
 	return formParams, nil
 }
 
-func loadExtractVariablesVariablesHCL(items []*ast.ObjectItem) ([]*evVariable, error) {
+func decodeVariablesHCL(items []*ast.ObjectItem) ([]*evVariable, error) {
 	var variables []*evVariable
 	for _, item := range items {
 		var v evVariable
@@ -419,7 +419,7 @@ func loadExtractVariablesVariablesHCL(items []*ast.ObjectItem) ([]*evVariable, e
 		v.Name = item.Keys[0].Token.Value().(string)
 
 		if patternList := listVal.Filter("pattern"); len(patternList.Items) > 0 {
-			patterns, err := loadExtractVariablesPatternsHCL(patternList.Items)
+			patterns, err := decodePatternsHCL(patternList.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -432,7 +432,7 @@ func loadExtractVariablesVariablesHCL(items []*ast.ObjectItem) ([]*evVariable, e
 	return variables, nil
 }
 
-func loadExtractVariablesJSONPayloadHCL(item *ast.ObjectItem) (*evJSONPayload, error) {
+func decodeJSONPayloadHCL(item *ast.ObjectItem) (*evJSONPayload, error) {
 	var p evJSONPayload
 
 	var listVal *ast.ObjectList
@@ -452,7 +452,7 @@ func loadExtractVariablesJSONPayloadHCL(item *ast.ObjectItem) (*evJSONPayload, e
 	}
 
 	if variableList := listVal.Filter("variable"); len(variableList.Items) > 0 {
-		variables, err := loadExtractVariablesJSONPayloadVariablesHCL(variableList.Items)
+		variables, err := decodeJSONPayloadVariablesHCL(variableList.Items)
 		if err != nil {
 			return nil, err
 		}
@@ -463,7 +463,7 @@ func loadExtractVariablesJSONPayloadHCL(item *ast.ObjectItem) (*evJSONPayload, e
 	return &p, nil
 }
 
-func loadExtractVariablesJSONPayloadVariablesHCL(items []*ast.ObjectItem) ([]*evJSONPayloadVariable, error) {
+func decodeJSONPayloadVariablesHCL(items []*ast.ObjectItem) ([]*evJSONPayloadVariable, error) {
 	var variables []*evJSONPayloadVariable
 	for _, item := range items {
 		var v evJSONPayloadVariable
@@ -498,7 +498,7 @@ func loadExtractVariablesJSONPayloadVariablesHCL(items []*ast.ObjectItem) ([]*ev
 	return variables, nil
 }
 
-func loadExtractVariablesXMLPayloadHCL(item *ast.ObjectItem) (*evXMLPayload, error) {
+func decodeXMLPayloadHCL(item *ast.ObjectItem) (*evXMLPayload, error) {
 	var p evXMLPayload
 
 	var listVal *ast.ObjectList
@@ -518,7 +518,7 @@ func loadExtractVariablesXMLPayloadHCL(item *ast.ObjectItem) (*evXMLPayload, err
 	}
 
 	if namespaceList := listVal.Filter("namespace"); len(namespaceList.Items) > 0 {
-		namespaces, err := loadExtractVariablesXMLPayloadNamespacesHCL(namespaceList.Items)
+		namespaces, err := decodeXMLPayloadNamespacesHCL(namespaceList.Items)
 		if err != nil {
 			return nil, err
 		}
@@ -527,7 +527,7 @@ func loadExtractVariablesXMLPayloadHCL(item *ast.ObjectItem) (*evXMLPayload, err
 	}
 
 	if variableList := listVal.Filter("variable"); len(variableList.Items) > 0 {
-		variables, err := loadExtractVariablesXMLPayloadVariablesHCL(variableList.Items)
+		variables, err := decodeXMLPayloadVariablesHCL(variableList.Items)
 		if err != nil {
 			return nil, err
 		}
@@ -538,7 +538,7 @@ func loadExtractVariablesXMLPayloadHCL(item *ast.ObjectItem) (*evXMLPayload, err
 	return &p, nil
 }
 
-func loadExtractVariablesXMLPayloadVariablesHCL(items []*ast.ObjectItem) ([]*evXMLPayloadVariable, error) {
+func decodeXMLPayloadVariablesHCL(items []*ast.ObjectItem) ([]*evXMLPayloadVariable, error) {
 	var variables []*evXMLPayloadVariable
 	for _, item := range items {
 		var v evXMLPayloadVariable
@@ -573,7 +573,7 @@ func loadExtractVariablesXMLPayloadVariablesHCL(items []*ast.ObjectItem) ([]*evX
 	return variables, nil
 }
 
-func loadExtractVariablesXMLPayloadNamespacesHCL(items []*ast.ObjectItem) ([]*evXMLPayloadNamespace, error) {
+func decodeXMLPayloadNamespacesHCL(items []*ast.ObjectItem) ([]*evXMLPayloadNamespace, error) {
 	var namespaces []*evXMLPayloadNamespace
 	for _, item := range items {
 		var v evXMLPayloadNamespace
@@ -608,7 +608,7 @@ func loadExtractVariablesXMLPayloadNamespacesHCL(items []*ast.ObjectItem) ([]*ev
 	return namespaces, nil
 }
 
-func loadExtractVariablesPatternsHCL(items []*ast.ObjectItem) ([]*evPattern, error) {
+func decodePatternsHCL(items []*ast.ObjectItem) ([]*evPattern, error) {
 	var patterns []*evPattern
 	for _, item := range items {
 		var pat evPattern

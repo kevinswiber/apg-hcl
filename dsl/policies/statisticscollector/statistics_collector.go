@@ -59,7 +59,7 @@ func DecodeStatisticsCollectorHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if statsList := listVal.Filter("statistic"); len(statsList.Items) > 0 {
-		stats, err := loadStatisticsCollectorStatisticHCL(statsList.Items)
+		stats, err := decodeStatisticHCL(statsList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -74,7 +74,7 @@ func DecodeStatisticsCollectorHCL(item *ast.ObjectItem) (interface{}, error) {
 	return p, nil
 }
 
-func loadStatisticsCollectorStatisticHCL(items []*ast.ObjectItem) ([]*scStatistic, error) {
+func decodeStatisticHCL(items []*ast.ObjectItem) ([]*scStatistic, error) {
 	var errors *multierror.Error
 	var stats []*scStatistic
 	for _, item := range items {

@@ -25,7 +25,7 @@ func DecodeConfigHCL(list *ast.ObjectList) (*Config, error) {
 	var c Config
 
 	if proxies := list.Filter("proxy"); len(proxies.Items) > 0 {
-		result, err := loadProxyHCL(proxies)
+		result, err := decodeProxyHCL(proxies)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 			return nil, errors

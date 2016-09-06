@@ -87,7 +87,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	proxyEndpoint.Name = n
 
 	if preFlow := listVal.Filter("pre_flow"); len(preFlow.Items) > 0 {
-		preFlow, err := loadPreFlowHCL(preFlow)
+		preFlow, err := decodePreFlowHCL(preFlow)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -96,7 +96,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if flows := listVal.Filter("flow"); len(flows.Items) > 0 {
-		flows, err := loadFlowsHCL(flows)
+		flows, err := decodeFlowsHCL(flows)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -105,7 +105,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if postFlow := listVal.Filter("post_flow"); len(postFlow.Items) > 0 {
-		postFlow, err := loadPostFlowHCL(postFlow)
+		postFlow, err := decodePostFlowHCL(postFlow)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -114,7 +114,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if postClientFlow := listVal.Filter("post_client_flow"); len(postClientFlow.Items) > 0 {
-		postClientFlow, err := loadPostClientFlowHCL(postClientFlow)
+		postClientFlow, err := decodePostClientFlowHCL(postClientFlow)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -123,7 +123,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if faultRulesList := listVal.Filter("fault_rule"); len(faultRulesList.Items) > 0 {
-		faultRules, err := loadFaultRulesHCL(faultRulesList)
+		faultRules, err := decodeFaultRulesHCL(faultRulesList)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -132,7 +132,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if defaultFaultRulesList := listVal.Filter("default_fault_rule"); len(defaultFaultRulesList.Items) > 0 {
-		faultRule, err := loadDefaultFaultRuleHCL(defaultFaultRulesList.Items[0])
+		faultRule, err := decodeDefaultFaultRuleHCL(defaultFaultRulesList.Items[0])
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -141,7 +141,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if hpcList := listVal.Filter("http_proxy_connection"); len(hpcList.Items) > 0 {
-		hpc, err := loadProxyEndpointHTTPProxyConnectionHCL(hpcList.Items[0])
+		hpc, err := decodeHTTPProxyConnectionHCL(hpcList.Items[0])
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -150,7 +150,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	}
 
 	if routeRulesList := listVal.Filter("route_rule"); len(routeRulesList.Items) > 0 {
-		routeRules, err := loadProxyEndpointRouteRulesHCL(routeRulesList)
+		routeRules, err := decodeRouteRulesHCL(routeRulesList)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -165,7 +165,7 @@ func NewProxyEndpointFromHCL(item *ast.ObjectItem) (*ProxyEndpoint, error) {
 	return &proxyEndpoint, nil
 }
 
-func loadProxyEndpointHTTPProxyConnectionHCL(item *ast.ObjectItem) (*HTTPProxyConnection, error) {
+func decodeHTTPProxyConnectionHCL(item *ast.ObjectItem) (*HTTPProxyConnection, error) {
 	var hpc HTTPProxyConnection
 
 	if err := hcl.DecodeObject(&hpc, item.Val); err != nil {
@@ -181,7 +181,7 @@ func loadProxyEndpointHTTPProxyConnectionHCL(item *ast.ObjectItem) (*HTTPProxyCo
 
 	if propsList := listVal.Filter("properties"); len(propsList.Items) > 0 {
 
-		props, err := common.LoadPropertiesHCL(propsList.Items[0])
+		props, err := common.DecodePropertiesHCL(propsList.Items[0])
 		if err != nil {
 			return nil, err
 		}
@@ -192,7 +192,7 @@ func loadProxyEndpointHTTPProxyConnectionHCL(item *ast.ObjectItem) (*HTTPProxyCo
 	return &hpc, nil
 }
 
-func loadProxyEndpointRouteRulesHCL(list *ast.ObjectList) ([]*RouteRule, error) {
+func decodeRouteRulesHCL(list *ast.ObjectList) ([]*RouteRule, error) {
 	var result []*RouteRule
 
 	for _, item := range list.Items {

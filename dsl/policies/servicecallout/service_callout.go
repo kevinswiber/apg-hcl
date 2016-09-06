@@ -65,7 +65,7 @@ func DecodeServiceCalloutHCL(item *ast.ObjectItem) (interface{}, error) {
 
 	if requestList := listVal.Filter("request"); len(requestList.Items) > 0 {
 		item := requestList.Items[0]
-		r, err := loadServiceCalloutRequestHCL(item)
+		r, err := decodeRequestHCL(item)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -76,7 +76,7 @@ func DecodeServiceCalloutHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if htcList := listVal.Filter("http_target_connection"); len(htcList.Items) > 0 {
-		htc, err := endpoints.LoadHTTPTargetConnectionHCL(htcList.Items[0])
+		htc, err := endpoints.DecodeHTTPTargetConnectionHCL(htcList.Items[0])
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -91,7 +91,7 @@ func DecodeServiceCalloutHCL(item *ast.ObjectItem) (interface{}, error) {
 	return p, nil
 }
 
-func loadServiceCalloutRequestHCL(item *ast.ObjectItem) (*scRequest, error) {
+func decodeRequestHCL(item *ast.ObjectItem) (*scRequest, error) {
 	var r scRequest
 	var errors *multierror.Error
 	var listVal *ast.ObjectList

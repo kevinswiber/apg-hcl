@@ -76,7 +76,7 @@ func DecodeRaiseFaultHCL(item *ast.ObjectItem) (interface{}, error) {
 
 	if faultResponseList := listVal.Filter("fault_response"); len(faultResponseList.Items) > 0 {
 		item := faultResponseList.Items[0]
-		a, err := loadRaiseFaultFaultResponse(item)
+		a, err := decodeFaultResponse(item)
 		if err != nil {
 			return nil, err
 		}
@@ -88,7 +88,7 @@ func DecodeRaiseFaultHCL(item *ast.ObjectItem) (interface{}, error) {
 	return p, nil
 }
 
-func loadRaiseFaultFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
+func decodeFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
 	var result *faultResponse
 
 	if err := hcl.DecodeObject(&result, item.Val.(*ast.ObjectType)); err != nil {
@@ -105,7 +105,7 @@ func loadRaiseFaultFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
 
 	if copyList := listVal.Filter("copy"); len(copyList.Items) > 0 {
 		item := copyList.Items[0]
-		a, err := loadRaiseFaultCopyHCL(item)
+		a, err := decodeCopyHCL(item)
 		if err != nil {
 			return nil, err
 		}
@@ -117,7 +117,7 @@ func loadRaiseFaultFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
 
 	if removeList := listVal.Filter("remove"); len(removeList.Items) > 0 {
 		item := removeList.Items[0]
-		a, err := loadRaiseFaultRemoveHCL(item)
+		a, err := decodeRemoveHCL(item)
 		if err != nil {
 			return nil, err
 		}
@@ -129,7 +129,7 @@ func loadRaiseFaultFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
 
 	if setList := listVal.Filter("set"); len(setList.Items) > 0 {
 		item := setList.Items[0]
-		a, err := loadRaiseFaultSetHCL(item)
+		a, err := decodeSetHCL(item)
 		if err != nil {
 			return nil, err
 		}
@@ -142,7 +142,7 @@ func loadRaiseFaultFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
 	return result, nil
 }
 
-func loadRaiseFaultCopyHCL(item *ast.ObjectItem) (*raiseFaultCopy, error) {
+func decodeCopyHCL(item *ast.ObjectItem) (*raiseFaultCopy, error) {
 	var result raiseFaultCopy
 	if err := hcl.DecodeObject(&result, item.Val.(*ast.ObjectType)); err != nil {
 		return nil, err
@@ -165,7 +165,7 @@ func loadRaiseFaultCopyHCL(item *ast.ObjectItem) (*raiseFaultCopy, error) {
 	return &result, nil
 }
 
-func loadRaiseFaultRemoveHCL(item *ast.ObjectItem) (*raiseFaultRemove, error) {
+func decodeRemoveHCL(item *ast.ObjectItem) (*raiseFaultRemove, error) {
 	var result raiseFaultRemove
 	if err := hcl.DecodeObject(&result, item.Val.(*ast.ObjectType)); err != nil {
 		return nil, err
@@ -188,7 +188,7 @@ func loadRaiseFaultRemoveHCL(item *ast.ObjectItem) (*raiseFaultRemove, error) {
 	return &result, nil
 }
 
-func loadRaiseFaultSetHCL(item *ast.ObjectItem) (*raiseFaultSet, error) {
+func decodeSetHCL(item *ast.ObjectItem) (*raiseFaultSet, error) {
 	var result raiseFaultSet
 	if err := hcl.DecodeObject(&result, item.Val.(*ast.ObjectType)); err != nil {
 		return nil, err

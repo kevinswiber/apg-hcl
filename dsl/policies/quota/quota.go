@@ -103,7 +103,7 @@ func DecodeQuotaHCL(item *ast.ObjectItem) (interface{}, error) {
 	}
 
 	if allowList := listVal.Filter("allow"); len(allowList.Items) > 0 {
-		a, err := loadQuotaAllowsHCL(allowList.Items)
+		a, err := decodeQuotaAllowsHCL(allowList.Items)
 		if err != nil {
 			errors = multierror.Append(errors, err)
 		} else {
@@ -118,7 +118,7 @@ func DecodeQuotaHCL(item *ast.ObjectItem) (interface{}, error) {
 	return p, nil
 }
 
-func loadQuotaAllowsHCL(items []*ast.ObjectItem) ([]*allow, error) {
+func decodeQuotaAllowsHCL(items []*ast.ObjectItem) ([]*allow, error) {
 	var result []*allow
 
 	for _, item := range items {
@@ -135,7 +135,7 @@ func loadQuotaAllowsHCL(items []*ast.ObjectItem) ([]*allow, error) {
 		}
 
 		if cs := listVal.Filter("class"); len(cs.Items) > 0 {
-			classes, err := loadQuotaAllowClassHCL(cs.Items)
+			classes, err := decodeQuotaAllowClassHCL(cs.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -147,7 +147,7 @@ func loadQuotaAllowsHCL(items []*ast.ObjectItem) ([]*allow, error) {
 	return result, nil
 }
 
-func loadQuotaAllowClassHCL(items []*ast.ObjectItem) ([]*class, error) {
+func decodeQuotaAllowClassHCL(items []*ast.ObjectItem) ([]*class, error) {
 	var result []*class
 
 	for _, item := range items {
@@ -165,7 +165,7 @@ func loadQuotaAllowClassHCL(items []*ast.ObjectItem) ([]*class, error) {
 
 		if as := listVal.Filter("allow"); len(as.Items) > 0 {
 
-			classAllows, err := loadQuotaAllowClassAllowsHCL(as.Items)
+			classAllows, err := decodeQuotaAllowClassAllowsHCL(as.Items)
 			if err != nil {
 				return nil, err
 			}
@@ -179,7 +179,7 @@ func loadQuotaAllowClassHCL(items []*ast.ObjectItem) ([]*class, error) {
 	return result, nil
 }
 
-func loadQuotaAllowClassAllowsHCL(items []*ast.ObjectItem) ([]*classAllow, error) {
+func decodeQuotaAllowClassAllowsHCL(items []*ast.ObjectItem) ([]*classAllow, error) {
 	var result []*classAllow
 
 	for _, item := range items {
