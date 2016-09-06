@@ -40,7 +40,6 @@ type ResourceGetter interface {
 
 // DecodePolicyHCL converts an HCL ast.ObjectItem into a Policy object.
 func DecodePolicyHCL(item *ast.ObjectItem, p *Policy) error {
-
 	if err := hcl.DecodeObject(p, item.Val.(*ast.ObjectType)); err != nil {
 		return err
 	}

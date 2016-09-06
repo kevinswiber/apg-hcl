@@ -75,5 +75,5 @@ func DecodeResponseCacheHCL(item *ast.ObjectItem) (interface{}, error) {
 		return nil, err
 	}
 
-	return p, nil
+	return &p, nil
 }

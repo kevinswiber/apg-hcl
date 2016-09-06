@@ -93,5 +93,5 @@ func DecodeXMLToJSONHCL(item *ast.ObjectItem) (interface{}, error) {
 		}
 	}
 
-	return p, nil
+	return &p, nil
 }

@@ -66,7 +66,7 @@ func DecodeStatisticsCollectorHCL(item *ast.ObjectItem) (interface{}, error) {
 		return nil, errors
 	}
 
-	return p, nil
+	return &p, nil
 }
 
 func decodeStatisticHCL(items []*ast.ObjectItem) ([]*scStatistic, error) {

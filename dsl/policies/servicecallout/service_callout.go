@@ -83,7 +83,7 @@ func DecodeServiceCalloutHCL(item *ast.ObjectItem) (interface{}, error) {
 		return nil, errors
 	}
 
-	return p, nil
+	return &p, nil
 }
 
 func decodeRequestHCL(item *ast.ObjectItem) (*scRequest, error) {

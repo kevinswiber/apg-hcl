@@ -205,7 +205,7 @@ func DecodeExtractVariablesHCL(item *ast.ObjectItem) (interface{}, error) {
 		return nil, errors
 	}
 
-	return p, nil
+	return &p, nil
 }
 
 func decodeURIPathsHCL(items []*ast.ObjectItem) ([]*evURIPath, error) {

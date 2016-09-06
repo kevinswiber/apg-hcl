@@ -80,7 +80,7 @@ func DecodeRaiseFaultHCL(item *ast.ObjectItem) (interface{}, error) {
 		p.FaultResponse = nil
 	}
 
-	return p, nil
+	return &p, nil
 }
 
 func decodeFaultResponse(item *ast.ObjectItem) (*faultResponse, error) {
